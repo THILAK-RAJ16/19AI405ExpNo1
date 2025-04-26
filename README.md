@@ -1,8 +1,6 @@
 <h1>ExpNo 1 :Developing AI Agent with PEAS Description</h1>
-<h3>Name: Saravanan N</h3>
-<h3>Register Number/Staff Id: TSML006</h3>
-
-
+<h3>Name: Thilak Raj . P
+<h3>Register Number: 212224040353
 <h3>AIM:</h3>
 <br>
 <p>To find the PEAS description for the given AI problem and develop an AI agent.</p>
@@ -40,3 +38,75 @@
 <p>Treat unhealthy patients in each room. And check for the unhealthy patients in random room</p>
 <h3>STEP 5:</h3>
 <p>Measure the performance parameters: For each treatment performance incremented, for each movement performance decremented</p>
+  
+# PROGRAM :
+~~~
+import random
+
+# Define the two rooms in the hospital
+room_A = "Room A"
+room_B = "Room B"
+rooms = [room_A, room_B]
+
+# Unhealthy threshold
+UNHEALTHY_TEMP = 98.5
+
+class Patient:
+    def __init__(self, room, temperature):
+        self.room = room
+        self.temperature = temperature
+        self.is_healthy = self.temperature <= UNHEALTHY_TEMP
+
+class HospitalEnvironment:
+    def __init__(self):
+        # Place an unhealthy patient in a random room
+        self.patient = Patient(room=random.choice(rooms), temperature=random.uniform(97.0, 101.0))
+        self.agent_location = random.choice(rooms)
+        self.performance = 0
+
+    def perceive(self):
+        # Return the patient's location and temperature
+        return self.agent_location, self.patient.room, self.patient.temperature
+
+    def prescribe_medicine(self):
+        print(f"Agent is in {self.agent_location}.")
+        print(f"Patient is in {self.patient.room} with temperature {self.patient.temperature:.2f}°F.")
+
+        if self.agent_location != self.patient.room:
+            print("Agent moving to patient's room...")
+            self.agent_location = self.patient.room
+            self.performance -= 1  # Movement cost
+
+        if self.patient.temperature > UNHEALTHY_TEMP:
+            print("Prescribing medicine for fever.")
+            self.performance += 10
+            self.patient.is_healthy = True
+        else:
+            print("Patient is healthy. No treatment needed.")
+
+    def step(self):
+        self.prescribe_medicine()
+        print(f"Agent performance: {self.performance}\n")
+
+# Main program
+if __name__ == "__main__":
+    hospital = HospitalEnvironment()
+
+    # Agent checks both rooms in two steps
+    for _ in range(2):
+        hospital.step()
+
+        # Simulate the patient moving or getting new fever again
+        hospital.patient.room = random.choice(rooms)
+        hospital.patient.temperature = random.uniform(97.0, 101.0)
+        hospital.patient.is_healthy = hospital.patient.temperature <= UNHEALTHY_TEMP
+
+~~~
+
+# OUTPUT 
+![image](https://github.com/user-attachments/assets/fc28ce9b-8681-4019-9eb7-b322d9922903)
+
+
+
+# RESULT :
+Thus, an AI agent is developed.
